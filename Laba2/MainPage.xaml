@@ -8,10 +8,13 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Button">
-                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="CornerRadius" Value="20"/>
                 <Setter Property="BackgroundColor" Value="#b3b3b3"/>
-
+                <Setter Property="WidthRequest" Value="300"/>
+                <!-- Встановлення бажаного розміру кнопок -->
+                <Setter Property="HeightRequest" Value="60"/>
             </Style>
+
         </ResourceDictionary>
         <StyleSheet Source="Resources/Styles/stylesCSS.css" />
     </ContentPage.Resources>
@@ -26,16 +29,16 @@
 
 
 
-
     <ScrollView>
+
         <StackLayout x:Name="stackLayout">
 
-        <Button Text="створити дефолтний xml файл" Clicked="CreateXML_Clicked"/>
 
-        <Button Text="завантажити xml файл" Clicked="LoadDataButton_Clicked"/>
-        <Button Text="Search" Clicked="SearchButton_Clicked"/>
 
-        <Button Text="Exit" Clicked="ConfirmExitButton_Clicked"/>
+
+
+
+
         <Button Text="Click to Rotate Text!"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
@@ -44,23 +47,112 @@
                Text="Click the Button above"
                FontSize="18"
                VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label x:Name="label1"
-               Text="Click the Button above"
-               FontSize="18"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        
-        <RadioButton GroupName="Options" Content="Option 1" />
-        <RadioButton GroupName="Options" Content="Option 2" />
-        <RadioButton GroupName="Options" Content="Option 3" />
-        
-        <Entry/>
-        
-        
-        <ScrollView/>
-        
-        
-    </StackLayout>
-    </ScrollView>
+               HorizontalOptions="Center" 
+               BackgroundColor="Coral"/>
+
+
+
+
+
+
+            <Grid RowSpacing="10" ColumnSpacing="10">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="200" />
+
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                
+                <BoxView Color="Green" />
+                <Button Text="створити дефолтний xml файл" Clicked="CreateXML_Clicked" BackgroundColor="#b3b3b3"
+                HorizontalOptions="Center"
+               VerticalOptions="Center" />
+                
+                <BoxView Grid.Column="1"
+                 Color="Blue" />
+                <Button Text="Search" Clicked="SearchButton_Clicked" Grid.Column="1" BackgroundColor="#b3b3b3" WidthRequest="200"
+               HorizontalOptions="Center"
+               VerticalOptions="Start" />
+
+                <Border Grid.Column="1" StrokeThickness="0" VerticalOptions="End">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <Entry Grid.Column="1" 
+           BackgroundColor="White"
+           VerticalOptions="End"/>
+                </Border>
+                <BoxView Grid.Row="1"
+                 Color="Teal" />
+                <Button Text="завантажити xml файл" Clicked="LoadDataButton_Clicked" Grid.Row="1" BackgroundColor="#b3b3b3"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+
+                <BoxView Grid.Row="1"
+                 Grid.Column="1"
+                 Color="Purple" />
+                <ScrollView Grid.Row="1" Grid.Column="1"  Grid.RowSpan="6">
+                    <Label x:Name="label1"
+                       Text="Click the Button above"
+                       FontSize="18"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       LineBreakMode="WordWrap" />
+                </ScrollView>
+                <!--<RadioButton GroupName="Options" Content="Option 1" />
+                <RadioButton GroupName="Options" Content="Option 2" />
+                <RadioButton GroupName="Options" Content="Option 3" />-->
+
+
+                <BoxView Grid.Row="2"
+                 Grid.Column="0"            
+                 Color="Chocolate" />
+
+    
+
+
+                <RadioButton GroupName="Options" Content="SAX API"
+                 Grid.Row="2"
+                 Grid.Column="0"    
+               HorizontalOptions="Start"
+               VerticalOptions="Start" />
+                <RadioButton GroupName="Options" Content="DOM API" 
+                 Grid.Row="2"
+                 Grid.Column="0"                
+                 HorizontalOptions="Start"
+                 VerticalOptions="Center" />
+                <RadioButton GroupName="Options" Content="LINQ to XML" 
+                 Grid.Row="2"
+                 Grid.Column="0"                
+                 HorizontalOptions="Start"
+                 VerticalOptions="End" />
+                <BoxView Grid.Row="3"
+
+                 Color="DarkCyan" />
+                <Button Text="Go" Clicked="GO" Grid.Row="3" BackgroundColor="#b3b3b3"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+
+                <BoxView Grid.Row="4"
+    
+                 Color="DarkSeaGreen" />
+                <Button Text="Exit" Clicked="ConfirmExitButton_Clicked" Grid.Row="4" BackgroundColor="#b3b3b3"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+            </Grid>
+
+
+        </StackLayout>
+        </ScrollView>
+
 </ContentPage>

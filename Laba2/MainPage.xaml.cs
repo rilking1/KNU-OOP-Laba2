@@ -126,12 +126,11 @@ namespace Laba2
 
         private void DisplayXmlContent(string xmlContent)
         {
-            // Update the Text property of the xmlContentLabel to display the XML content
-            xmlContentLabel.Text = xmlContent;
-            // Add the xmlContentLabel to the existing StackLayout
-            stackLayout.Children.Add(xmlContentLabel);
+            // Update the Text property of the label1 to display the XML content
+            label1.Text = xmlContent;
+            // Remove xmlContentLabel from stackLayout if it already exists
+            stackLayout.Children.Remove(xmlContentLabel);
         }
-
 
         private void SearchButton_Clicked(object sender, EventArgs e)
         {
@@ -140,7 +139,11 @@ namespace Laba2
 
         async void ClearButton_Clicked(object sender, EventArgs e)
         {
-            await label.RelRotateTo(360, 1000);
+            await label1.RelRotateTo(360, 1000);
+        }
+        async void GO (object sender, EventArgs e)
+        {
+            DisplayAlert("Button Clicked", "Search button clicked", "OK");
         }
 
         //стибрив нижній код з книги омельчук с.257
