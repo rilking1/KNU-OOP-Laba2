@@ -1,59 +1,137 @@
 ﻿using System;
+using System.IO;
+using System.Xml;
 using Microsoft.Maui.Controls;
+using System.Text;
+using Microsoft.Maui.Controls.Compatibility;
 
 namespace Laba2
 {
-    class Program1
+    public partial class MainPage : ContentPage
     {
-        static void vfv()
+        private Label xmlContentLabel;
+
+        public MainPage()
         {
-            // Задайте шлях до вашого файлу
-            string filePath = "Resources/Raw/kex.txt";
-
-            // Задайте слово, яке ви шукаєте
-            string searchWord = "Вірш";
-
-            // Виклик функції пошуку
-            SearchWordInFile(filePath, searchWord);
+            InitializeComponent();
+            // Initialize the xmlContentLabel
+            xmlContentLabel = new Label
+            {
+                Margin = new Thickness(20)
+            };
         }
 
-        static void SearchWordInFile(string filePath, string searchWord)
+        private void CreateXML_Clicked(object sender, EventArgs e)
+        {
+            // Call the method to create and save the XML document
+            CreateAndSaveXmlDocument();
+
+            // Display alert indicating that the XML document has been created
+            DisplayAlert("XML Document Created", "XmlDocumentTest.xml has been created on the desktop.", "OK");
+        }
+
+        // Rest of your existing code...
+
+        // Add the following method from the second code snippet
+        private static void CreateAndSaveXmlDocument()
+        {
+            var xmlDoc = new XmlDocument();
+            XmlElement rootElement;
+            int childCounter;
+            int grandChildCounter;
+
+            xmlDoc.AppendChild(xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null));
+            rootElement = xmlDoc.CreateElement("MyRoot");
+            xmlDoc.AppendChild(rootElement);
+
+            for (childCounter = 1; childCounter <= 3; childCounter++)
+            {
+                XmlElement childElement;
+                XmlAttribute childAttribute;
+
+                childElement = xmlDoc.CreateElement("MyChild");
+                childAttribute = xmlDoc.CreateAttribute("ID");
+                childAttribute.Value = childCounter.ToString();
+                childElement.Attributes.Append(childAttribute);
+
+                rootElement.AppendChild(childElement);
+
+                for (grandChildCounter = 1; grandChildCounter <= 4; grandChildCounter++)
+                {
+                    XmlElement grandChildElement;
+                    XmlAttribute grandChildAttribute;
+
+                    grandChildElement = xmlDoc.CreateElement("MyGrandChild");
+                    grandChildAttribute = xmlDoc.CreateAttribute("NAME");
+                    grandChildAttribute.Value = childAttribute.Value + " " + grandChildCounter.ToString();
+                    grandChildElement.Attributes.Append(grandChildAttribute);
+                    childElement.AppendChild(grandChildElement);
+                }
+            }
+
+            xmlDoc.Save(GetFilePath("XmlDocumentTest.xml"));
+            Console.WriteLine("XmlDocumentTest.xml Created\r\n");
+        }
+
+        private static string GetFilePath(string fileName)
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+        }
+        private async void LoadDataButton_Clicked(object sender, EventArgs e)
         {
             try
             {
-                // Використовуйте StreamReader для зчитування файлу
-                using (StreamReader sr = new StreamReader(filePath))
+                var fileResult = await FilePicker.PickAsync(new PickOptions
                 {
-                    string line;
+                    PickerTitle = "Select an XML file"
+                });
 
-                    // Зчитуйте рядок за рядком
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        // Перевіряйте, чи містить рядок шукане слово
-                        if (line.Contains(searchWord))
-                        {
-                            Console.WriteLine($"Знайдено слово '{searchWord}' в рядку: {line}");
-                        }
-                    }
+                if (fileResult != null && fileResult.FileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Read the content of the XML file
+                    string xmlContent = await ReadXmlFile(fileResult.FullPath);
+
+                    // Display the XML content in the Label on the same page
+                    DisplayXmlContent(xmlContent);
+                }
+                else
+                {
+                    DisplayAlert("File Not Selected or Invalid", "No XML file selected or the selected file is not a valid XML file", "OK");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Помилка: {ex.Message}");
+                // Handle exception
+                DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
             }
         }
-    }
-    public partial class MainPage : ContentPage
-    {
-        public MainPage()
+
+        private async Task<string> ReadXmlFile(string filePath)
         {
-            InitializeComponent();
+            try
+            {
+                // Read the content of the XML file
+                using (var reader = new StreamReader(filePath))
+                {
+                    return await reader.ReadToEndAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+                DisplayAlert("Error", $"An error occurred while reading the XML file: {ex.Message}", "OK");
+                return null;
+            }
         }
 
-        private void LoadDataButton_Clicked(object sender, EventArgs e)
+        private void DisplayXmlContent(string xmlContent)
         {
-            DisplayAlert("Button Clicked", "Load Data button clicked", "OK");
+            // Update the Text property of the xmlContentLabel to display the XML content
+            xmlContentLabel.Text = xmlContent;
+            // Add the xmlContentLabel to the existing StackLayout
+            stackLayout.Children.Add(xmlContentLabel);
         }
+
 
         private void SearchButton_Clicked(object sender, EventArgs e)
         {
@@ -73,6 +151,11 @@ namespace Laba2
             {
                 System.Environment.Exit(0);
             }
+        }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+
         }
     }
 }
