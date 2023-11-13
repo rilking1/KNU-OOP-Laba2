@@ -7,12 +7,12 @@
              BackgroundColor="#e6e6e6">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <!--не працює якщо не змінить якесь значення-->
             <Style TargetType="Button">
-                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="CornerRadius" Value="40"/>
                 <Setter Property="BackgroundColor" Value="#b3b3b3"/>
-                <Setter Property="WidthRequest" Value="300"/>
-                <!-- Встановлення бажаного розміру кнопок -->
-                <Setter Property="HeightRequest" Value="60"/>
+                <Setter Property="WidthRequest" Value="120"/>
+                <Setter Property="HeightRequest" Value="120"/>
             </Style>
 
         </ResourceDictionary>
@@ -39,32 +39,16 @@
 
 
 
-        <Button Text="Click to Rotate Text!"
-                VerticalOptions="Center"
-                HorizontalOptions="Center"
-                Clicked="ClearButton_Clicked" />
-        <Label x:Name="label"
-               Text="Click the Button above"
-               FontSize="18"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" 
-               BackgroundColor="Coral"/>
-
-
-
-
 
 
             <Grid RowSpacing="10" ColumnSpacing="10">
                 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="200" />
-                    <RowDefinition Height="200" />
-                    <RowDefinition Height="200" />
-                    <RowDefinition Height="200" />
-                    <RowDefinition Height="200" />
-                    <RowDefinition Height="200" />
-                    <RowDefinition Height="200" />
+                    <RowDefinition Height="220" />
+                    <RowDefinition Height="120" />
+                    <RowDefinition Height="90" />
+                    <RowDefinition Height="120" />
+                    <RowDefinition Height="120" />
 
                 </Grid.RowDefinitions>
                 
@@ -74,13 +58,13 @@
                 </Grid.ColumnDefinitions>
                 
                 <BoxView Color="Green" />
-                <Button Text="створити дефолтний xml файл" Clicked="CreateXML_Clicked" BackgroundColor="#b3b3b3"
+                <Button Text="create xml" Clicked="CreateXML_Clicked" BackgroundColor="#b3b3b3" WidthRequest="230" HeightRequest="150" LineBreakMode="CharacterWrap" CornerRadius="40"
                 HorizontalOptions="Center"
                VerticalOptions="Center" />
                 
                 <BoxView Grid.Column="1"
                  Color="Blue" />
-                <Button Text="Search" Clicked="SearchButton_Clicked" Grid.Column="1" BackgroundColor="#b3b3b3" WidthRequest="200"
+                <Button Text="Search" Clicked="SearchButton_Clicked" Grid.Column="1" BackgroundColor="#b3b3b3" WidthRequest="220" HeightRequest="120" CornerRadius="40"
                HorizontalOptions="Center"
                VerticalOptions="Start" />
 
@@ -94,21 +78,28 @@
                 </Border>
                 <BoxView Grid.Row="1"
                  Color="Teal" />
-                <Button Text="завантажити xml файл" Clicked="LoadDataButton_Clicked" Grid.Row="1" BackgroundColor="#b3b3b3"
+                <Button Text="download XML" FontSize="12" Clicked="LoadDataButton_Clicked" Grid.Row="1" BackgroundColor="#b3b3b3" WidthRequest="220" HeightRequest="120" LineBreakMode="WordWrap" CornerRadius="40"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
 
                 <BoxView Grid.Row="1"
                  Grid.Column="1"
                  Color="Purple" />
-                <ScrollView Grid.Row="1" Grid.Column="1"  Grid.RowSpan="6">
-                    <Label x:Name="label1"
-                       Text="Click the Button above"
+                <Border StrokeThickness="0" VerticalOptions="Start" Grid.Row="1" Grid.Column="1"  Grid.RowSpan="6">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="50" />
+                    </Border.StrokeShape>
+                    <ScrollView Grid.Row="1" Grid.Column="1"  Grid.RowSpan="6"> 
+
+                        <Label x:Name="label1" BackgroundColor="White" WidthRequest="10000" 
+                        Padding="20,0,0,0"
                        FontSize="18"
                        HorizontalOptions="Center"
-                       VerticalOptions="Center"
+                       VerticalOptions="Start"
                        LineBreakMode="WordWrap" />
+
                 </ScrollView>
+                </Border>
                 <!--<RadioButton GroupName="Options" Content="Option 1" />
                 <RadioButton GroupName="Options" Content="Option 2" />
                 <RadioButton GroupName="Options" Content="Option 3" />-->
@@ -139,17 +130,25 @@
                 <BoxView Grid.Row="3"
 
                  Color="DarkCyan" />
-                <Button Text="Go" Clicked="GO" Grid.Row="3" BackgroundColor="#b3b3b3"
+                <Button Text="Go" Clicked="GO" Grid.Row="3" BackgroundColor="#b3b3b3" WidthRequest="220" HeightRequest="120" CornerRadius="40"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
 
                 <BoxView Grid.Row="4"
     
                  Color="DarkSeaGreen" />
-                <Button Text="Exit" Clicked="ConfirmExitButton_Clicked" Grid.Row="4" BackgroundColor="#b3b3b3"
+                <Button Text="Exit" Clicked="ConfirmExitButton_Clicked" Grid.Row="4" BackgroundColor="#b3b3b3" WidthRequest="220" HeightRequest="120" CornerRadius="40"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
             </Grid>
+
+
+
+            <Button Text="Click to Rotate Text!"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Clicked="ClearButton_Clicked" />
+
 
 
         </StackLayout>
