@@ -46,7 +46,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="220" />
                     <RowDefinition Height="120" />
-                    <RowDefinition Height="90" />
+                    <RowDefinition Height="150" />
                     <RowDefinition Height="120" />
                     <RowDefinition Height="120" />
 
@@ -56,17 +56,15 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                
-                <BoxView Color="Green" />
-                <Button Text="create xml" Clicked="CreateXML_Clicked" BackgroundColor="#b3b3b3" WidthRequest="230" HeightRequest="150" LineBreakMode="CharacterWrap" CornerRadius="40"
+
+                <Button Text="create xml" Clicked="CreateXML_Clicked" BackgroundColor="#b3b3b3" WidthRequest="250" HeightRequest="150" LineBreakMode="CharacterWrap" CornerRadius="40"
                 HorizontalOptions="Center"
                VerticalOptions="Center" />
                 
-                <BoxView Grid.Column="1"
-                 Color="Blue" />
-                <Button Text="Search" Clicked="SearchButton_Clicked" Grid.Column="1" BackgroundColor="#b3b3b3" WidthRequest="220" HeightRequest="120" CornerRadius="40"
+
+                <Button Text="Search" Clicked="SearchButton_Clicked" Grid.Column="1" BackgroundColor="#b3b3b3" WidthRequest="1015" HeightRequest="20" CornerRadius="20"
                HorizontalOptions="Center"
-               VerticalOptions="Start" />
+               VerticalOptions="CenterAndExpand" />
 
                 <Border Grid.Column="1" StrokeThickness="0" VerticalOptions="End">
                     <Border.StrokeShape>
@@ -76,15 +74,12 @@
            BackgroundColor="White"
            VerticalOptions="End"/>
                 </Border>
-                <BoxView Grid.Row="1"
-                 Color="Teal" />
+
                 <Button Text="download XML" FontSize="12" Clicked="LoadDataButton_Clicked" Grid.Row="1" BackgroundColor="#b3b3b3" WidthRequest="220" HeightRequest="120" LineBreakMode="WordWrap" CornerRadius="40"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
 
-                <BoxView Grid.Row="1"
-                 Grid.Column="1"
-                 Color="Purple" />
+
                 <Border StrokeThickness="0" VerticalOptions="Start" Grid.Row="1" Grid.Column="1"  Grid.RowSpan="6">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="50" />
@@ -105,38 +100,31 @@
                 <RadioButton GroupName="Options" Content="Option 3" />-->
 
 
-                <BoxView Grid.Row="2"
-                 Grid.Column="0"            
-                 Color="Chocolate" />
-
-    
 
 
-                <RadioButton GroupName="Options" Content="SAX API"
+
+
+                <Button Clicked="SAX" Text="SAX API" BackgroundColor="#b3b3b3"  WidthRequest="220" HeightRequest="10" CornerRadius="10"
                  Grid.Row="2"
                  Grid.Column="0"    
                HorizontalOptions="Start"
                VerticalOptions="Start" />
-                <RadioButton GroupName="Options" Content="DOM API" 
+                <Button Clicked="DOM" Text="DOM API"  BackgroundColor="#b3b3b3"  WidthRequest="220" HeightRequest="20" CornerRadius="10"
                  Grid.Row="2"
                  Grid.Column="0"                
                  HorizontalOptions="Start"
                  VerticalOptions="Center" />
-                <RadioButton GroupName="Options" Content="LINQ to XML" 
+                <Button Clicked="LINQToXML" Text="LINQ to XML"  BackgroundColor="#b3b3b3"  WidthRequest="220" HeightRequest="20" CornerRadius="10"
                  Grid.Row="2"
                  Grid.Column="0"                
                  HorizontalOptions="Start"
                  VerticalOptions="End" />
-                <BoxView Grid.Row="3"
 
-                 Color="DarkCyan" />
                 <Button Text="Go" Clicked="GO" Grid.Row="3" BackgroundColor="#b3b3b3" WidthRequest="220" HeightRequest="120" CornerRadius="40"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
 
-                <BoxView Grid.Row="4"
-    
-                 Color="DarkSeaGreen" />
+
                 <Button Text="Exit" Clicked="ConfirmExitButton_Clicked" Grid.Row="4" BackgroundColor="#b3b3b3" WidthRequest="220" HeightRequest="120" CornerRadius="40"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
