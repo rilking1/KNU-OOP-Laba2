@@ -4,11 +4,16 @@ using System.Xml;
 using Microsoft.Maui.Controls;
 using System.Text;
 using Microsoft.Maui.Controls.Compatibility;
+using System.Xml.Linq;
 
 namespace Laba2
 {
     public partial class MainPage : ContentPage
     {
+        //Клас MainPage:
+        //Наслідується від ContentPage, що вказує на те, що це представляє собою сторінку додатка.
+        //Містить приватну змінну екземпляру xmlContentLabel типу Label.
+
         private Label xmlContentLabel;
 
         public MainPage()
@@ -21,18 +26,16 @@ namespace Laba2
             };
         }
 
+        //Обробник події для натискання кнопки create xml.
         private void CreateXML_Clicked(object sender, EventArgs e)
         {
-            // Call the method to create and save the XML document
+            // Викликає метод CreateAndSaveXmlDocument для створення та збереження XML-документа.
             CreateAndSaveXmlDocument();
 
-            // Display alert indicating that the XML document has been created
+            // Показує сповіщення про створення XML-документа.
             DisplayAlert("XML Document Created", "XmlDocumentTest.xml has been created on the desktop.", "OK");
         }
-
-        // Rest of your existing code...
-
-        // Add the following method from the second code snippet
+        //Нижній код я взяв у книжці пані Омельчук. Він створює xml файл і додає його на робочий стіл.
         private static void CreateAndSaveXmlDocument()
         {
             var xmlDoc = new XmlDocument();
@@ -77,18 +80,32 @@ namespace Laba2
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
         }
+
+        //Обробник події для натискання кнопки download XML.
+        //async позначає, що цей метод є асинхронним, тобто він може виконуватися паралельно з іншими операціями.
+        //sender і EventArgs додаються автоматично платформою, коли ви визначаєте обробник події.
+        //sender вказує на об'єкт, який відправив (викликав) подію.
+        //EventArgs(Event Arguments) є базовим класом для передачі додаткової інформації про подію.
         private async void LoadDataButton_Clicked(object sender, EventArgs e)
         {
             try
             {
+            //await використовується для того, щоб програма могла продовжувати виконувати інші завдання під час очікування вибору файлу.
+            //FilePicker: Це клас абстракції для вибору файлів в Xamarin-додатках.Він дозволяє користувачеві вибирати файли з файлової системи пристрою.
+            //PickAsync: Цей метод викликається для відкриття діалогового вікна вибору файлу, де користувач може вибрати файл.
+            //хотів змінити заголовок вікна вибору файлу на "Select an XML file" але воно щось не змінюється :< треба потім переробити
                 var fileResult = await FilePicker.PickAsync(new PickOptions
                 {
                     PickerTitle = "Select an XML file"
                 });
-
+                //Перевіряє, чи результат вибору файлу(fileResult) не є порожнім(null).
+                //Перевіряє, чи ім'я вибраного файлу має розширення ".xml".
+                //Це виконується за допомогою методу EndsWith, який перевіряє, чи рядок закінчується вказаним значенням (в даному випадку, ".xml").
+                //StringComparison.OrdinalIgnoreCase вказує, що порівняння має бути регістронезалежним.
                 if (fileResult != null && fileResult.FileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
                 {
-                    // Read the content of the XML file
+                    //Викликається метод ReadXmlFile для асинхронного зчитування вмісту вибраного XML-файлу за його повним шляхом (fileResult.FullPath).
+                    //Результат зчитування(вміст XML-файлу) зберігається у змінній xmlContent. 
                     string xmlContent = await ReadXmlFile(fileResult.FullPath);
 
                     // Display the XML content in the Label on the same page
@@ -132,6 +149,131 @@ namespace Laba2
             stackLayout.Children.Remove(xmlContentLabel);
         }
 
+        private async void DOM(object sender, EventArgs e)
+        {
+            string domResult = parsingXmlDocument();
+            label1.Text = domResult;
+        }
+
+        private static string parsingXmlDocument()
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(getFilePath("XmlDocumentTest.xml"));
+            return RecurseNodes(xmlDoc.DocumentElement);
+        }
+
+        private static string RecurseNodes(XmlNode node)
+        {
+            var sb = new StringBuilder();
+            RecurseNodes(node, 0, sb);
+            return sb.ToString();
+        }
+
+        private static void RecurseNodes(XmlNode node, int level, StringBuilder sb)
+        {
+            sb.AppendFormat("{0,-2} Тип:{1,-9} Назва:{2,-13} Атрибути:", level, node.NodeType, node.Name);
+            foreach (XmlAttribute attr in node.Attributes)
+            {
+                sb.AppendFormat("{0}={1} ", attr.Name, attr.Value);
+            }
+            sb.AppendLine();
+            foreach (XmlNode n in node.ChildNodes)
+            {
+                RecurseNodes(n, level + 1, sb);
+            }
+        }
+
+        private static string getFilePath(string fileName)
+    {
+        return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+    }
+
+        private void SAX(object sender, EventArgs e)
+        {
+            parsingWithXmlTextReader();
+        }
+
+        private void parsingWithXmlTextReader()
+        {
+            var sb = new StringBuilder();
+            var xmlReader = new XmlTextReader(getFilePath("XmlDocumentTest.xml"));
+
+            while (xmlReader.Read())
+            {
+                switch (xmlReader.NodeType)
+                {
+                    case XmlNodeType.XmlDeclaration:
+                    case XmlNodeType.Element:
+                    case XmlNodeType.Comment:
+                        sb.AppendFormat("{0}: {1} = {2}",
+                            xmlReader.NodeType,
+                            xmlReader.Name,
+                            xmlReader.Value);
+                        sb.AppendLine();
+                        break;
+                    case XmlNodeType.Text:
+                        sb.AppendFormat(" - Value: {0}", xmlReader.Value);
+                        sb.AppendLine();
+                        break;
+                }
+
+                if (xmlReader.HasAttributes)
+                {
+                    while (xmlReader.MoveToNextAttribute())
+                    {
+                        sb.AppendFormat(" - Attribute: {0} = {1}",
+                            xmlReader.Name,
+                            xmlReader.Value);
+                        sb.AppendLine();
+                    }
+                }
+            }
+
+            xmlReader.Close();
+            label1.Text = sb.ToString();
+        }
+        private void LINQToXML(object sender, EventArgs e)
+        {
+            string linqResult = ParsingWithLINQToXML();
+            label1.Text = linqResult;
+        }
+
+        private string ParsingWithLINQToXML()
+        {
+            try
+            {
+                XDocument xdoc = XDocument.Load(GetFilePath("XmlDocumentTest.xml"));
+
+                // Знаходимо всі елементи верхнього рівня в документі
+                var result = xdoc.Root.Elements()
+                    .Select(element => new
+                    {
+                        ElementName = element.Name.LocalName,
+                        Attributes = element.Attributes()
+                            .ToDictionary(attr => attr.Name.LocalName, attr => attr.Value),
+                        InnerText = element.Value
+                    });
+
+                StringBuilder sb = new StringBuilder();
+                foreach (var item in result)
+                {
+                    sb.AppendLine($"Елемент: {item.ElementName}");
+                    foreach (var attribute in item.Attributes)
+                    {
+                        sb.AppendLine($"  Атрибут: {attribute.Key} = {attribute.Value}");
+                    }
+                    sb.AppendLine($"  Текст: {item.InnerText}");
+                }
+
+                return sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Помилка", $"Виникла помилка під час обробки XML за допомогою LINQ: {ex.Message}", "OK");
+                return null;
+            }
+        }
+
         private void SearchButton_Clicked(object sender, EventArgs e)
         {
             DisplayAlert("Button Clicked", "Search button clicked", "OK");
@@ -141,6 +283,7 @@ namespace Laba2
         {
             await label1.RelRotateTo(360, 1000);
         }
+
         async void GO (object sender, EventArgs e)
         {
             DisplayAlert("Button Clicked", "Search button clicked", "OK");
